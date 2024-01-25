@@ -17,7 +17,7 @@ class TranslationInput:
         self.text = text
 
 @app.route("/translate", methods=["POST"])
-# @cache.cached(timeout=60 * 60)  # Cache for 1 hour
+@cache.cached(timeout=60 * 60)  # Cache for 1 hour
 def translate():
 
     data = request.get_json()
@@ -26,7 +26,6 @@ def translate():
     payload = {"inputs": f"Translate from French to English: {text_input.text}"}
 
     try:
-        # Make request to Hugging Face API
         response = requests.post(API_URL, headers=HEADERS, json=payload)
         print(response)
         response.raise_for_status()
@@ -36,7 +35,6 @@ def translate():
 
     return jsonify({"translation": translation[0]["generated_text"]})
 
-# Run the Flask app
 if __name__ == "__main__":
     app.run(debug=True)
 

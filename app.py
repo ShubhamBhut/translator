@@ -17,7 +17,7 @@ class TranslationInput:
         self.text = text
 
 @app.route("/translate", methods=["POST"])
-@cache.cached(timeout=60 * 60)  # Cache for 1 hour
+@cache.cached(timeout=60 * 60, key_prefix=lambda: request.get_json()["text"])  # Cache for 1 hour
 def translate():
 
     data = request.get_json()
@@ -37,4 +37,3 @@ def translate():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
